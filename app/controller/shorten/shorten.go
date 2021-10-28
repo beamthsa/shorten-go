@@ -38,14 +38,6 @@ func PostShorten(c *gin.Context) {
 		return
 	}
 
-	existingUrl, _ := model.GetUrl(form.Url)
-	if len(existingUrl) > 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Something went wrong, please try again.",
-		})
-		return
-	}
-
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
 	id := r.Uint64()
@@ -53,8 +45,7 @@ func PostShorten(c *gin.Context) {
 
 	_, err := model.InsertUrl(model.UrlModel{
 		UrlID: id,
-		Url: encodedId,
-		Target: form.Url,
+		Url: form.Url,
 	})
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -78,7 +69,6 @@ func PostShorten(c *gin.Context) {
 func GetShortenRedirect(c *gin.Context) {
 	params := GetShortenRedirectParam{}
 
-	fmt.Println(c.Param("url"))
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -86,7 +76,16 @@ func GetShortenRedirect(c *gin.Context) {
 		return
 	}
 
-	model, err := model.GetUrl(params.Url)
+	decodedId, err := shortener.Decode(params.Url)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Something went wrong, please try again.",
+		})
+		return
+	}
+
+	model, err := model.GetUrl(decodedId)
+	fmt.Println(model[0].Url)
 	if len(model) == 0 || err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid URL",
@@ -94,5 +93,5 @@ func GetShortenRedirect(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusPermanentRedirect, model[0].Target)
+	c.Redirect(http.StatusTemporaryRedirect, model[0].Url)
 }

@@ -22,7 +22,6 @@ DROP TABLE IF EXISTS url;
 CREATE TABLE url (
     url_id bigint NOT NULL PRIMARY KEY,
     url character varying(100) NOT NULL,
-    target character varying(100) NOT NULL,
     created_at smallint
 );
 

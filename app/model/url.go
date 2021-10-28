@@ -10,19 +10,18 @@ type UrlModel struct {
 	bun.BaseModel   `bun:"url,alias:u"`
 	UrlID      		uint64 `bun:",pk"`
 	Url     		string
-	Target			string
 }
 
-func GetUrl(url string) ([]UrlModel, error) {
+func GetUrl(id uint64) ([]UrlModel, error) {
 	data := new([]UrlModel)
 
 	err := database.PGConnection.NewSelect().
 		Model(data).
-		Where("url = ?", url).
+		Where("url_id = ?", id).
 		Limit(1).
 		Scan(ctx)
 	if err != nil {
-		log.Fatal("Error GetUrl:", url, err)
+		log.Fatal("Error GetUrl:", id, err)
 		return *data, err
 	}
 
@@ -34,7 +33,7 @@ func InsertUrl(value UrlModel) (UrlModel, error) {
 
 	_, err := database.PGConnection.NewInsert().
 		Model(&data).
-		Column("url_id", "url", "target").
+		Column("url_id", "url").
 		Exec(ctx)
 	if err != nil {
 		log.Fatal("Error InsertUrl:", err)
