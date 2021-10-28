@@ -1,0 +1,6 @@
+GET http://{{host}}:{{port}}/products/all
+Accept: application/json
+
+###
+GET http://{{host}}:{{port}}/products/1/description
+Accept: application/json

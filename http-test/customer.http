@@ -1,0 +1,8 @@
+GET http://{{host}}:{{port}}/customer/accounts?limit=10
+Accept: application/json
+
+###
+GET http://{{host}}:{{port}}/customer/accounts
+Accept: application/json
+
+###

@@ -1,0 +1,7 @@
+.idea
+log
+.env
+/resources/docker/postgres/
+/resources/docker/database/files/
+/resources/docker/database/postgresql_bin/
+/resources/docker/database/postgresql_data/

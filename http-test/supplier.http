@@ -1,0 +1,7 @@
+GET http://{{host}}:{{port}}/products/1/supplier
+Accept: application/json
+###
+
+GET http://{{host}}:{{port}}/products/no-data-in-db/supplier
+Accept: application/json
+###
