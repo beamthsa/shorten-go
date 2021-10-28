@@ -85,7 +85,6 @@ func GetShortenRedirect(c *gin.Context) {
 	}
 
 	model, err := model.GetUrl(decodedId)
-	fmt.Println(model[0].Url)
 	if len(model) == 0 || err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid URL",

@@ -28,7 +28,6 @@ func main() {
 		shortenR.GET("/:url", shorten.GetShortenRedirect)
 	}
 
-	log.Printf("\n\n PORT: %s \n ENV: %s \n", goDotENV.Port, goDotENV.GinMode)
 	if err := router.Run(goDotENV.Port); err != nil {
 		log.Fatal("Gin run error", err)
 	}
